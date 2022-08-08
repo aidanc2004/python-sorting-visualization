@@ -5,9 +5,7 @@ import pygame
 import random
 import time
 
-n = int(sys.argv[1]) # move this please
-
-def selection_sort(array, i):
+def selection_sort(array, i, n):
     m = i
     for j in range(i+1, n):
         if array[j] < array[m]:
@@ -17,14 +15,26 @@ def selection_sort(array, i):
     return array
 
 def main():
-    pygame.init()
-
     size = width, height = 800, 600
-    screen = pygame.display.set_mode(size)
+    
+    try:
+        n = int(sys.argv[1])
+    except IndexError:
+        print("Usage: %s n" % sys.argv[0])
+        sys.exit(1)
+    except ValueError:
+        print("Please enter a valid number")
+        sys.exit(1)
 
-    if n > width:
+    if n <= 0:
+        print("number has to be greater than 1")
+        sys.exit(1)
+    elif n > width:
         print("error: n is too big")
         sys.exit(1)
+
+    pygame.init()
+    screen = pygame.display.set_mode(size)
 
     black = 0, 0 ,0
     white = 255, 255, 255
@@ -50,7 +60,7 @@ def main():
             rect = pygame.Rect((x, y), (w, h))
             pygame.draw.rect(screen, white, rect)
 
-        array = selection_sort(array, loops)
+        array = selection_sort(array, loops, n)
         loops += 1
         
         pygame.display.flip()
